@@ -1,0 +1,69 @@
+<html>
+
+<head>
+    <meta title="jquery">
+    <meta charset="UTF-8">
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js'></script>
+</head>
+
+<body>
+    <div id="app">
+        <div style="width: 200px;margin: auto;">
+            <img v-bind:src="src">
+            <h1 v-text=title></h1>
+            <div>
+                <p>
+                    <a v-if="index != 0" v-on:click="changeIndex(-1)">&lt;</a>
+
+                    <span>{{index+1}}</span>
+                    <span>{{ menu[index].type }}</span>
+                    <a :href="menu[index].url">{{ menu[index].title }}</a>
+
+                    <a v-if="index != total-1" v-on:click="changeIndex(1)">&gt;</a>
+                </p>
+
+            </div>
+        </div>
+
+    </div>
+    <script>
+        let data = {
+            title: "vue 手牵手",
+            src: "./ball.jpg",
+            index: 0,
+            menu: [{
+                type: "video",
+                title: "title1",
+                url: "baidu.com"
+            }, {
+                type: "video",
+                title: "title2",
+                url: "sohu.com"
+            }, {
+                type: "video",
+                title: "title3",
+                url: "sina.com.cn"
+            }, ]
+        }
+        let vm = new Vue({
+            el: "#app",
+            data: data,
+            computed: {
+                total() {
+                    return this.menu.length
+                }
+            },
+            methods: {
+                changeIndex(direction) {
+                    this.index = (this.index + direction + this.menu.length) % this.menu.length
+                        /*var testIndex = this.index + direction;
+                        if (testIndex > -1 && testIndex <= this.menu.length) {
+                             this.index = testIndex
+                        }*/
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>

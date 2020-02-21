@@ -1,0 +1,14 @@
+{
+    "name": "vuetest",
+    "version": "1.0.0",
+    "description": "",
+
+    "scripts": {
+        "json": "json-server --watch db.json --port 8888"
+    },
+    "author": "",
+    "license": "MIT",
+    "dependencies": {
+        "json-server": "^0.16.0"
+    }
+}

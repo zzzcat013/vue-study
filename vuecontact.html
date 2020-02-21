@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact</title>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js'></script>
+</head>
+
+<body>
+    <div id="app">
+        <section v-if="loading">
+            Loading
+        </section>
+
+        <section v-else>
+            <div>
+                <input type="text" placeholder="name" v-model.trim="input.name">
+                <input type="text" placeholder="email" v-model.trim="input.email">
+                <button @click="submitHandler">submmit</button>
+                <button @click="cancelHandler">cancel</button>
+                <div v-for="item,i in contacts">
+                    {{item.id}}: {{item.name}} <a :href="'mailto:'+item.email">{{item.email}}</a><button @click="patchHandler(i)">修改</button>
+                    <button @click="deleteHandler(i)">删除</button>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script>
+        ;
+        (function(Vue) {
+            new Vue({
+                el: "#app",
+                data: {
+                    contacts: [],
+                    editIndex: null,
+                    input: {
+                        name: "",
+                        email: ""
+                    },
+                    loading: false
+                },
+                methods: {
+                    submitHandler() {
+                        let {
+                            name,
+                            email
+                        } = this.input
+                        if (!name || !email) return
+                        this.loading = true
+                        if (this.editIndex == null) {
+                            axios.post('http://localhost:8888/contact', this.input).then((res) => {
+                                console.log("res=", res)
+                                this.contacts.push(res.data)
+                                this.cancelHandler()
+                                this.loading = false
+                            }).catch((err) => {
+                                console.log("err", err)
+                            })
+                        } else {
+                            let {
+                                id
+                            } = this.contacts[this.editIndex]
+                            axios.put('http://localhost:8888/contact/' + id, this.input).then((res) => {
+                                console.log("res=", res)
+                                this.contacts[this.editIndex] = res.data
+                                this.cancelHandler()
+                                this.loading = false
+                            }).catch((err) => {
+                                console.log("err", err)
+                            })
+                        }
+
+                    },
+                    cancelHandler() {
+                        this.input.name = ''
+                        this.input.email = ''
+                        this.editIndex = null
+                    },
+                    patchHandler(index) {
+                        let {
+                            name,
+                            email
+                        } = this.contacts[index]
+                        this.input = {
+                            name,
+                            email
+                        }
+                        this.editIndex = index
+
+
+                    },
+                    deleteHandler(index) {
+                        let target = this.contacts[index]
+
+                        if (confirm(`是否要删除${target.name}`)) {
+                            thia.loading = true
+                            axios.delete('http://localhost:8888/contact/' + this.contacts[index].id).then((res) => {
+                                this.contacts.splice(index, 1)
+                                this.cancelHandler()
+                                this.loading = false
+                            }).catch((err) => {
+                                console.log("err", err)
+                            })
+                        }
+
+                    }
+                },
+                mounted() {
+                    this.loading = true
+                    axios.get('http://localhost:8888/contact').then((res) => {
+                        this.contacts = res.data
+                        this.loading = false
+                    }).catch((err) => {
+                        console.log("err", err)
+                    })
+                },
+            })
+        })(Vue)
+    </script>
+</body>
+
+</html>
