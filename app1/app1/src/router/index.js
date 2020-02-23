@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import Alex from '../views/Alex.vue'
+
 
 Vue.use(VueRouter)
 
@@ -22,8 +22,26 @@ const routes = [
   {
     path: '/alex',
     name: 'Alex',
-    component: Alex
-  },
+    component: () => import(/* webpackChunkName: "alex" */ '../views/Alex.vue'),
+    children:[
+      {
+      path: 'info',
+      name: 'alex-info',
+      component: () => import(/* webpackChunkName: "info" */ '../views/Info.vue'),
+    },{
+      path: 'youtube',
+      name: 'alex-youtube',
+      component: () => import(/* webpackChunkName: "youtube" */ '../views/Youtube.vue'),
+    }
+   ]
+  },{
+    path: '/iron',
+    name: 'iron',
+    redirect:'/iron/1'               
+  },{
+    path: '/iron/:day',
+    component: () => import(/* webpackChunkName: "iron" */ '../views/Iron/index.vue'),
+  }
 ]
 
 const router = new VueRouter({
