@@ -5,7 +5,7 @@ Vue.use(Vuex);
 
 const LS = {
     load() {
-        return JSON.parse(localStorage.getItem('vue-todo') || '[]')
+        return JSON.parse(localStorage.getItem('vue-todos') || '[]')
     },
     save(data) {
         localStorage.setItem('vue-todo', data)
