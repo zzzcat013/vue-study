@@ -7,7 +7,9 @@
       <router-link to="/complete">已完成</router-link>
     </div>      
     <TodoInput/>
-
+    <div >
+      <!-- <TodoListItem v-for="(index) in todoIndex" :key="index" :index="index"/> -->
+    </div>
     <router-view />
   </div>
 </template>
@@ -15,15 +17,15 @@
 
 
 <script>
-import TodoInput from '@/compontents/TodoInput/index.vue'
-
+import TodoInput from '@/components/TodoInput/index.vue'
+//import TodoListItem from '@/components/TodoListItem/index.vue'
 export default {
-  compontents:{
-   TodoInput
+  components:{
+   TodoInput,//TodoListItem
   },
     computed:{
       todoIndex(){
-        return this.$store.getters('todoIndex')
+        return this.$store.getters['todoIndex']
       }
     },
     mounted(){
@@ -31,8 +33,6 @@ export default {
     }
 }
 </script>
-
-
 
 <style src="./assets/style.css">
 </style>

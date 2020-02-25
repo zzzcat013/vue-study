@@ -8,7 +8,7 @@ const LS = {
         return JSON.parse(localStorage.getItem('vue-todos') || '[]')
     },
     save(data) {
-        localStorage.setItem('vue-todo', data)
+        localStorage.setItem('vue-todos', JSON.stringify(data))
     }
 }
 
@@ -39,17 +39,20 @@ export default new Vuex.Store({
     },
     getters: {
         todoIndex(state) {
-            return filter[state.route.name](state.todos).map(todo => {
-                state.todos.indexOf(todo)
-            })
+            return filter[state.route.name](state.todos)
+                // return filter[state.route.name](state.todos).map(todo => {
+                //     state.todos.indexOf(todo)
+                // })
         }
     },
     mutations: {
         SET_TODOS(state, data) {
             state.todos = data
+            console.log("state.todos", state.todos)
             LS.save(state.todos)
         },
         ADD_TODO(state, data) {
+            console.log("ADD_TODO", data)
             state.todos.push(data)
             LS.save(state.todos)
         },
@@ -65,8 +68,7 @@ export default new Vuex.Store({
     actions: {
         INIT_TODOS({ commit }) {
             commit('SET_TODOS', LS.load())
-        },
-
+        }
     },
     modules: {}
 });
