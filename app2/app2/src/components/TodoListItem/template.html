@@ -1,5 +1,5 @@
 <div class="todoItem">
-    <input type="checkbox">
+    <input type="checkbox" v-model="complete">
     <label>{{todo.content}}</label>
     <button @click="deleteHandler">删除</button>
 </div>

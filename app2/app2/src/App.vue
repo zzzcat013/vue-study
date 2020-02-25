@@ -8,7 +8,7 @@
     </div>      
     <TodoInput/>
     <div >
-      <!-- <TodoListItem v-for="(index) in todoIndex" :key="index" :index="index"/> -->
+      <TodoListItem v-for="index in todoIndex" :key="index" :index="index"/>
     </div>
     <router-view />
   </div>
@@ -18,13 +18,14 @@
 
 <script>
 import TodoInput from '@/components/TodoInput/index.vue'
-//import TodoListItem from '@/components/TodoListItem/index.vue'
+import TodoListItem from '@/components/TodoListItem/index.vue'
 export default {
   components:{
-   TodoInput,//TodoListItem
+   TodoInput,TodoListItem
   },
     computed:{
       todoIndex(){
+        console.log("App todoIndex",this.$store.getters['todoIndex'])
         return this.$store.getters['todoIndex']
       }
     },

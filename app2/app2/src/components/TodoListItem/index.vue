@@ -27,7 +27,7 @@ export default {
     },
     methods:{
         deleteHandler(){
-            if (confirm('是否确认删除 $(this.todo.content) ?'))
+            if (confirm(`是否确认删除 ${this.todo.content} ?`))
             this.$store.commit("REMOVE_TODO",this.index)
         }
     }

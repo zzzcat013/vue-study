@@ -39,10 +39,10 @@ export default new Vuex.Store({
     },
     getters: {
         todoIndex(state) {
-            return filter[state.route.name](state.todos)
-                // return filter[state.route.name](state.todos).map(todo => {
-                //     state.todos.indexOf(todo)
-                // })
+            let name=state.route.name
+            let result=filter[state.route.name](state.todos).map(todoItem=>state.todos.indexOf(todoItem))
+            console.log("name",name,"result",result)
+            return filter[state.route.name](state.todos).map(todoItem=>state.todos.indexOf(todoItem))
         }
     },
     mutations: {
@@ -54,6 +54,7 @@ export default new Vuex.Store({
         ADD_TODO(state, data) {
             console.log("ADD_TODO", data)
             state.todos.push(data)
+            console.log("ADD_TODO todos",state.todos )
             LS.save(state.todos)
         },
         UPDATE_TODO(state, { index, data }) {
@@ -67,6 +68,7 @@ export default new Vuex.Store({
     },
     actions: {
         INIT_TODOS({ commit }) {
+            console.log("this.state.todos",this.state.todos)
             commit('SET_TODOS', LS.load())
         }
     },
